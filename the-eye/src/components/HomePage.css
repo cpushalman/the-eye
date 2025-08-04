@@ -1,0 +1,237 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
+@font-face {
+  font-family: "MyFont";
+  src: url("../assets/qbfont.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+.homecontainer {
+  font-family: "Fira Code", monospace;
+  width: 100vdw;
+  height: 100vh;
+  background: #000;
+  position: relative;
+  color: white;
+}
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.27;
+}
+.bg img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.logo {
+  height: 40px;
+}
+
+.nav {
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.logo img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.navitems {
+  font-size: 0.7em;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  height: 30px;
+  width: auto;
+  background-color: #131313;
+  font-size: .8em;
+  padding: 24px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-right: 100px;
+}
+.navitems p {
+    position: relative;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.navitems p::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.4s ease;
+}
+
+.navitems p:hover::after {
+    width: 100%;
+}
+
+.navitems p:hover {
+    color: #ffffff;
+}
+.hero {
+  width: 700px;
+  font-size: 23px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-align: center;
+}
+
+.herotxt1 {
+  font-family: "MyFont";
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+.herotxt2 {
+  font-family: "MyFont";
+  width: 100%;
+  position: relative;
+  bottom: 15px;
+  left: -50px;
+}
+
+.svglogo {
+  position: absolute;
+
+  bottom: 18px;
+  right: 34px;
+  width: 90px;
+}
+
+.svglogo svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  fill: white;
+}
+
+.explore {
+  position: absolute;
+  height: 50px;
+  right: 100px;
+  bottom: -100px;
+}
+
+.explore svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-fit: contain;
+}
+
+.explore p {
+  width: 100%;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+}
+.overflow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  overflow: hidden;
+}
+.explore img {
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  transform: translate(-50%, -50%);
+}
+.blur {
+  position: absolute;
+  height: 200px;
+  width: 800px;
+  z-index: 2;
+  bottom: -10%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, 0);
+  filter: blur(150px);
+  background: rgb(137, 137, 255);
+}
+.explore {
+  position: absolute;
+  height: 50px;
+  right: 100px;
+  bottom: -100px;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.explore:hover {
+  transform: translateY(-5px);
+  filter: brightness(1.2);
+}
+
+.explore svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: fill 0.3s ease;
+}
+
+.explore:hover svg {
+  fill: #333333;
+}
+
+.explore p {
+  width: 100%;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  transition: color 0.3s ease;
+}
+
+.explore:hover p {
+  color: #ffffff;
+}
+
+.explore img {
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease;
+}
+
+.explore:hover img {
+  transform: translate(-45%, -50%);
+}
