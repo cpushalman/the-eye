@@ -2,10 +2,20 @@ import React from "react";
 import "./HomePage.css";
 import bg from "../assets/bg.jpg";
 import logo from "../assets/tplogo.png";
+import Terminal from "../components/Terminal";
+import CommandOverlay from "../components/commandOverlay";
+import { useState } from "react";
+
 import right from "../assets/arrow-right.png";
 function HomePage() {
+  const [showTerminal, setShowTerminal] = useState(false);
+
   return (
     <div className="homecontainer">
+
+{showTerminal && <div className="terminal-cont"> <Terminal onClose={() => setShowTerminal(false)} /></div>}
+
+      <div className="command"> <CommandOverlay /></div>
       <div className="bg">
         <img src={bg} alt="" />
 
@@ -53,6 +63,9 @@ function HomePage() {
             />
           </svg>
         </div>
+        <div onClick={() => setShowTerminal(true)} className="terminal-button"><p>Terminal</p><svg xmlns="http://www.w3.org/2000/svg" width="111" height="33" viewBox="0 0 111 33" fill="none">
+<path d="M0 33H111V10.5L98.334 0H0V33Z" fill="#D9D9D9"/>
+</svg></div>
         <div className="explore">
           <p>Explore More</p> <img src={right} alt="" />
           <svg
@@ -69,6 +82,8 @@ function HomePage() {
           </svg>
         </div>
       </div>
+     
+
     </div>
   );
 }

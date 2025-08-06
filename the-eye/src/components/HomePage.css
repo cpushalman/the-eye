@@ -13,6 +13,7 @@
   background: #000;
   position: relative;
   color: white;
+  overflow: hidden;
 }
 .bg {
   position: absolute;
@@ -183,6 +184,34 @@
   filter: blur(150px);
   background: rgb(137, 137, 255);
 }
+.terminal-button{
+  position: absolute;
+  z-index: 3;
+  top: -80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+
+}
+
+.terminal-cont{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%; 
+  width: 100%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.terminal-button p{
+position: absolute;
+font-size: 15px;
+color: #000;
+}
 .explore {
   position: absolute;
   height: 50px;
@@ -191,7 +220,10 @@
   cursor: pointer;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
-
+.terminal-button:hover{
+   transform: translateY(-5px);
+  filter: brightness(0.8);
+}
 .explore:hover {
   transform: translateY(-5px);
   filter: brightness(1.2);
@@ -216,6 +248,16 @@
   left: 40%;
   transform: translate(-50%, -50%);
   transition: color 0.3s ease;
+}
+
+.command{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .explore:hover p {
