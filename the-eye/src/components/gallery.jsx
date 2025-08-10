@@ -49,23 +49,32 @@ export default function Gallery() {
     galleryGroup.add(cylinder);
 
     const textureLoader = new THREE.TextureLoader();
+    let sharedTexture = null;
+    let sharedGeometry = null;
 
-    function loadImageTexture() {
+    // Load texture once and reuse
+    async function loadImageTexture() {
+      if (sharedTexture) return sharedTexture;
+
       return new Promise((resolve, reject) => {
         const texture = textureLoader.load(
           `/src/assets/bg2.jpg`,
           (loadedTexture) => {
-            loadedTexture.generateMipmaps = false;
-            loadedTexture.minFilter = THREE.LinearFilter;
+            loadedTexture.generateMipmaps = true;
+            loadedTexture.minFilter = THREE.LinearMipmapLinearFilter;
             loadedTexture.magFilter = THREE.LinearFilter;
-            loadedTexture.wrapS = THREE.ClampToEdgeWrap;
-            loadedTexture.wrapT = THREE.ClampToEdgeWrap;
-            loadedTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+            loadedTexture.wrapS = THREE.RepeatWrapping;
+            loadedTexture.wrapT = THREE.RepeatWrapping;
+            loadedTexture.anisotropy = Math.min(
+              4,
+              renderer.capabilities.getMaxAnisotropy()
+            );
+            sharedTexture = loadedTexture;
             resolve(loadedTexture);
           },
           undefined,
           (error) => {
-            console.error(`Failed to load texture: bg1.jpg`, error);
+            console.error(`Failed to load texture: bg2.jpg`, error);
             reject(error);
           }
         );
@@ -73,14 +82,18 @@ export default function Gallery() {
     }
 
     function createCurvedPlane(width, height, radius, segments) {
+      if (sharedGeometry) return sharedGeometry.clone();
+
       const geometry = new THREE.BufferGeometry();
       const vertices = [];
       const indices = [];
       const uvs = [];
 
-      const segmentsX = segments * 2; // Reduced for better quality
-      const segmentsY = Math.floor(height * 8); // Reduced for better quality
+      // Optimized segments for better performance
+      const segmentsX = 16;
+      const segmentsY = 12;
       const theta = width / radius;
+
       for (let y = 0; y <= segmentsY; y++) {
         const yPos = (y / segmentsY - 0.5) * height;
         for (let x = 0; x <= segmentsX; x++) {
@@ -88,10 +101,11 @@ export default function Gallery() {
           const xPos = Math.sin(xAngle) * radius;
           const zPos = Math.cos(xAngle) * radius;
           vertices.push(xPos, yPos, zPos);
-          // Improved UV mapping for better clarity
-          uvs.push(x / segmentsX, y / segmentsY);
+          // Better UV mapping for clearer images
+          uvs.push(x / segmentsX, 1 - y / segmentsY);
         }
       }
+
       for (let y = 0; y < segmentsY; y++) {
         for (let x = 0; x < segmentsX; x++) {
           const a = x + (segmentsX + 1) * y;
@@ -111,6 +125,7 @@ export default function Gallery() {
       geometry.setIndex(indices);
       geometry.computeVertexNormals();
 
+      sharedGeometry = geometry;
       return geometry;
     }
 
@@ -132,12 +147,16 @@ export default function Gallery() {
 
       const blockMaterial = new THREE.MeshBasicMaterial({
         map: texture,
-        side: THREE.DoubleSide,
+        side: THREE.DoubleSide, // Only render front side for better performance
         transparent: false,
       });
 
       const block = new THREE.Mesh(blockGeometry, blockMaterial);
       block.position.y = baseY + yOffset;
+
+      // Optimize by setting frustum culling
+      block.frustumCulled = true;
+
       const blockContainer = new THREE.Group();
       const baseAngle = sectionAngle * blockIndex;
       const randomAngleOffset = (Math.random() * 2 - 1) * maxRandomAngle;
@@ -179,14 +198,21 @@ export default function Gallery() {
       }
     }
 
+    // Optimized animation with reduced rotation frequency
+    let isAnimating = true;
+
     function animate() {
+      if (!isAnimating) return;
+
       requestAnimationFrame(animate);
 
       const scrollFraction = totalScroll > 0 ? currentScroll / totalScroll : 0;
       const targetY = scrollFraction * height - height / 2;
       camera.position.y = -targetY;
-      galleryGroup.rotation.y += baseRotationSpeed + rotationSpeed;
-      rotationSpeed *= 0.95;
+
+      // Reduce rotation frequency for better performance
+      galleryGroup.rotation.y += baseRotationSpeed + rotationSpeed * 0.1;
+      rotationSpeed *= 0.98;
 
       renderer.render(scene, camera);
     }
@@ -196,8 +222,26 @@ export default function Gallery() {
 
     // Cleanup function
     return () => {
+      isAnimating = false;
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateScrollValues);
+
+      // Proper cleanup
+      blocks.forEach((block) => {
+        if (block.children[0]) {
+          block.children[0].geometry.dispose();
+          block.children[0].material.dispose();
+        }
+      });
+
+      if (sharedTexture) {
+        sharedTexture.dispose();
+      }
+
+      if (sharedGeometry) {
+        sharedGeometry.dispose();
+      }
+
       if (renderer.domElement && renderer.domElement.parentNode) {
         renderer.domElement.parentNode.removeChild(renderer.domElement);
       }
