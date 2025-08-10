@@ -1,0 +1,17 @@
+.gallery{
+    position: relative;
+    height: 100vh;
+    background: #181818;
+width: 100%;
+}
+
+.comeve{
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    font-family: MyFont;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    color: rgb(88, 88, 88);
+
+}

@@ -7,10 +7,10 @@ export default function IntroLogo() {
   const svgRef = useRef(null);
 
   useEffect(() => {
-    console.log("IntroLogo useEffect running");
+    
     const overlay = overlayRef.current;
     const svg = svgRef.current;
-    console.log("overlay:", overlay, "svg:", svg);
+   
 
     if (!overlay || !svg) return;
 
@@ -26,7 +26,7 @@ export default function IntroLogo() {
 
     // Find all strokeable shapes: path, line, polyline, polygon
     const paths = svg.querySelectorAll("path, line, polyline, polygon");
-    console.log("Found paths:", paths.length);
+    
 
     // prepare each path for stroke drawing
     paths.forEach((p, index) => {

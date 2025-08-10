@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Gallery from './components/gallery'
 
 import './App.css'
 import IntroLogo from './components/introsvg'
@@ -14,6 +15,8 @@ function App() {
     <IntroLogo></IntroLogo>
    <HomePage></HomePage>
  <Events></Events>
+ <Gallery></Gallery>
+
     </>
   )
 }

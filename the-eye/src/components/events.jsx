@@ -52,7 +52,6 @@ export default function events() {
       const totalCards = cards.length;
 
       if (totalCards === 0) {
-        console.error("No cards found!");
         return;
       }
 
@@ -98,7 +97,22 @@ export default function events() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          
+          onLeave: () => {
+            const typographyContainer = document.querySelector(
+              ".bg-typography-container"
+            );
+            if (typographyContainer) {
+              typographyContainer.style.display = "none";
+            }
+          },
+          onEnterBack: () => {
+            const typographyContainer = document.querySelector(
+              ".bg-typography-container"
+            );
+            if (typographyContainer) {
+              typographyContainer.style.display = "flex";
+            }
+          },
         },
       });
 
