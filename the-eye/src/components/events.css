@@ -1,0 +1,58 @@
+img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  position: relative;
+}
+
+section{
+  position: relative;
+  color: white;
+  height: 100svh;
+  width: 100vw;
+  background: #181818;
+  overflow: hidden;
+  padding: 2em;
+}
+
+.sticky-cards{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0e0e0e;
+  color: white;
+
+}
+
+.cards-container{
+  width: 40%;
+  height: 50%;
+  position: relative;
+  border-radius: 0.5em;
+  overflow: hidden;
+ 
+}
+
+.cards{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+
+.tag{
+  position: absolute; 
+  top: 1em;
+  left: 1em;
+  padding: 0.5em;
+  border-radius: 0.25em;
+  background: #000;
+  z-index: 1;
+}
+
+.tag p{
+  font-size: 12px;
+  font-family: fira code;
+   
+}

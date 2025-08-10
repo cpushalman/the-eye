@@ -1,16 +1,28 @@
 import React from "react";
+import Lenis from 'lenis'
 import "./HomePage.css";
 import bg from "../assets/bg.jpg";
 import logo from "../assets/tplogo.png";
 import Terminal from "../components/Terminal";
 import CommandOverlay from "../components/commandOverlay";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import { useState } from "react";
 
 import right from "../assets/arrow-right.png";
 function HomePage() {
   const [showTerminal, setShowTerminal] = useState(false);
+  const lenis = new Lenis();
 
-  return (
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
+  return (<>
     <div className="homecontainer">
 
 {showTerminal && <div className="terminal-cont"> <Terminal onClose={() => setShowTerminal(false)} /></div>}
@@ -85,6 +97,8 @@ function HomePage() {
      
 
     </div>
+    
+    </>
   );
 }
 

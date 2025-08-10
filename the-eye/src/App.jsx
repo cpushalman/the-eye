@@ -3,6 +3,7 @@ import { useState } from 'react'
 import './App.css'
 
 import './components/HomePage'
+import Events from './components/events'
 import HomePage from './components/HomePage'
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
   return (
     <>
    <HomePage></HomePage>
-  
+ <Events></Events>
     </>
   )
 }
