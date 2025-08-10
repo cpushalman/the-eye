@@ -1,39 +1,45 @@
-.gallery {
-  position: relative;
-  height: 500vh;
-  background: #000000;
-  width: 100%;
- 
+.gallery{
+    position: relative;
+    align-items: center;
+    height: 100vh;
+    background: #0e0e0e;;
+    overflow: hidden;
 }
 
-.gallery-pin-spacer {
-  height: 500vh; /* This controls the pinning duration */
-  width: 100%;
-  position: relative;
 
+.gallery h1{
+    text-align: center;
+    font-family: MyFont;
+    padding: 20px;
+    font-size: 8rem;
+    color: rgb(88, 88, 88);
 }
 
-.gallery-sticky-wrapper {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  width: 100%;
-  z-index: 1;
-}
-
-.gallery-canvas-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  z-index: 10;
-}
-
-canvas {
+.gallery-overlay {
   position: absolute;
+  margin-inline: auto;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 0.4s ease;
 }
+
+
+.gallery-modal {
+    width: 65%;
+    height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.gallery-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
