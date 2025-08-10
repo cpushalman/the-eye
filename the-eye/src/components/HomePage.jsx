@@ -40,8 +40,8 @@ gsap.ticker.lagSmoothing(0);
         </div>
         <div className="navitems">
           <p>Home</p>
-          <p>Verticals</p>
-          <p>Community events</p>
+          <p>Events</p>
+          <p>Gallery</p>
           <p>Contact</p>
         </div>
       </div>
