@@ -17,10 +17,7 @@ export default function events() {
       // Split text animation for background typography
       const splitText = document.querySelector(".bg-typography");
 
-
       if (splitText) {
-  
-
         // Split the text into individual letters
         const letters = splitText.textContent
           .split("")
@@ -33,7 +30,6 @@ export default function events() {
         splitText.innerHTML = letters;
 
         const letterSpans = document.querySelectorAll(".letter");
-       
 
         // Ensure letters are visible first, then animate
         gsap.set(letterSpans, {
@@ -49,14 +45,11 @@ export default function events() {
           stagger: 0.1, // Increased stagger for more visible effect
           ease: "back.out(1.7)",
           delay: 1, // Increased delay
-          
         });
       }
 
       const cards = document.querySelectorAll(".cards");
       const totalCards = cards.length;
-
-      
 
       if (totalCards === 0) {
         console.error("No cards found!");
@@ -105,7 +98,25 @@ export default function events() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-        
+          onStart: () => console.log("Animation started"),
+          onUpdate: (self) => {
+            console.log("Animation progress:", self.progress);
+          },
+          onComplete: () => console.log("Animation completed"),
+        },
+      });
+
+      // Pin the typography container along with the section
+      ScrollTrigger.create({
+        trigger: ".events",
+        start: "top top",
+        end: `+=${window.innerHeight * totalCards}`,
+        pin: ".bg-typography-container",
+        pinSpacing: false,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onToggle: (self) => {
+          console.log("Typography pinned:", self.isActive);
         },
       });
 
