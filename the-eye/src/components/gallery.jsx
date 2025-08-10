@@ -22,6 +22,7 @@ export default function Gallery() {
     document.querySelector(".gallery").appendChild(renderer.domElement);
     camera.position.z = 12;
     camera.position.y = 0;
+    camera.lookAt(0, 0, 0);
     const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);
     const galleryGroup = new THREE.Group();
@@ -49,20 +50,23 @@ export default function Gallery() {
 
     const textureLoader = new THREE.TextureLoader();
 
-    function getrandom() {
-      return Math.floor(Math.random() * 50) + 1;
-    }
-
-    function loadImageTexture(imageNumber) {
-      return new Promise((resolve) => {
+    function loadImageTexture() {
+      return new Promise((resolve, reject) => {
         const texture = textureLoader.load(
-          `assets/img${imageNumber}.jpg`,
+          `/src/assets/bg2.jpg`,
           (loadedTexture) => {
-            loadedTexture.generateMipmaps = true;
-            loadedTexture.minFilter = THREE.LinearMipmapLinearFilter;
+            loadedTexture.generateMipmaps = false;
+            loadedTexture.minFilter = THREE.LinearFilter;
             loadedTexture.magFilter = THREE.LinearFilter;
+            loadedTexture.wrapS = THREE.ClampToEdgeWrap;
+            loadedTexture.wrapT = THREE.ClampToEdgeWrap;
             loadedTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
             resolve(loadedTexture);
+          },
+          undefined,
+          (error) => {
+            console.error(`Failed to load texture: bg1.jpg`, error);
+            reject(error);
           }
         );
       });
@@ -74,8 +78,8 @@ export default function Gallery() {
       const indices = [];
       const uvs = [];
 
-      const segmentsX = segments * 4;
-      const segmentsY = Math.floor(height * 12);
+      const segmentsX = segments * 2; // Reduced for better quality
+      const segmentsY = Math.floor(height * 8); // Reduced for better quality
       const theta = width / radius;
       for (let y = 0; y <= segmentsY; y++) {
         const yPos = (y / segmentsY - 0.5) * height;
@@ -84,7 +88,8 @@ export default function Gallery() {
           const xPos = Math.sin(xAngle) * radius;
           const zPos = Math.cos(xAngle) * radius;
           vertices.push(xPos, yPos, zPos);
-          uvs.push((x / segmentsX) * 0.8 + 1, y / segmentsY);
+          // Improved UV mapping for better clarity
+          uvs.push(x / segmentsX, y / segmentsY);
         }
       }
       for (let y = 0; y < segmentsY; y++) {
@@ -121,62 +126,83 @@ export default function Gallery() {
     const sectionAngle = (Math.PI * 2) / blocksPerSection;
     const maxRandomAngle = sectionAngle * 0.3;
 
-    async function createBlock(baseY, yOffset,sectionIndex, blockIndex) {
+    async function createBlock(baseY, yOffset, sectionIndex, blockIndex) {
+      const blockGeometry = createCurvedPlane(5, 3, radius, 10);
+      const texture = await loadImageTexture();
 
-      const blockGeometry =createCurvedPlane(5,3,radius,10);
-      const imageNumber= getrandom();
-      const texture = await loadImageTexture(imageNumber);
+      const blockMaterial = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
+        transparent: false,
+      });
 
-      const blockMaterial =new THREE.MeshPhongMaterial({
-        map:texture,side: THREE.DoubleSide,toneMapped:false,
-      })
-
-      const block = new THREE.Mesh(blockGeometry,blockMaterial);
-      block.position.y=baseY + yOffset;
-      const  blockContainer = new THREE.Group();
-      const baseAngle =sectionAngle * blockIndex;
-      const randomAngleOffset= (Math.random()* 2- 1) * maxRandomAngle;
+      const block = new THREE.Mesh(blockGeometry, blockMaterial);
+      block.position.y = baseY + yOffset;
+      const blockContainer = new THREE.Group();
+      const baseAngle = sectionAngle * blockIndex;
+      const randomAngleOffset = (Math.random() * 2 - 1) * maxRandomAngle;
       const finalAngle = baseAngle + randomAngleOffset;
-      blockContainer.rotation.y= finalAngle;
+      blockContainer.rotation.y = finalAngle;
       blockContainer.add(block);
-       
 
       return blockContainer;
-      
     }
- async function initializeBlock() {
-  
-  for(let section=0; section < numVerticalSections;  section++){
+    // Scroll and rotation variables
+    let currentScroll = 0;
+    let totalScroll = document.body.scrollHeight - window.innerHeight;
+    let baseRotationSpeed = 0.005;
+    let rotationSpeed = 0;
 
-    const baseY= startY + section * verticalSpacing;
-    for(let i=0;i > blocksPerSection;i++){
-      const yOffset = Math.random() * 0.2 - 0.1;
-      const blockContainer= await createBlock( baseY, yOffset, section,i);
-      blocks.push(blockContainer);
-      galleryGroup.add(blockContainer);
-
+    // Update scroll values on window resize
+    function updateScrollValues() {
+      totalScroll = document.body.scrollHeight - window.innerHeight;
     }
-  }
- }
 
- function animate(){
-  requestAnimationFrame(animate);
+    // Handle scroll events
+    function handleScroll() {
+      currentScroll = window.pageYOffset;
+      rotationSpeed += 0.02;
+    }
 
-  const scrollFraction= currentScroll/totalScroll;
-  const targetY = scrollFraction * height- height/2;
-  camera.position.y = -targetY;
-  galleryGroup.rotation.y+= baseRotationSpeed +  rotationSpeed;
-  rotationSpeed*=0.2;
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", updateScrollValues);
 
-  renderer.render(scene,camera);
- }
+    async function initializeBlock() {
+      for (let section = 0; section < numVerticalSections; section++) {
+        const baseY = startY + section * verticalSpacing;
+        for (let i = 0; i < blocksPerSection; i++) {
+          const yOffset = Math.random() * 0.2 - 0.1;
+          const blockContainer = await createBlock(baseY, yOffset, section, i);
+          blocks.push(blockContainer);
+          galleryGroup.add(blockContainer);
+        }
+      }
+    }
 
- initializeBlock();
- animate();
+    function animate() {
+      requestAnimationFrame(animate);
 
-  
+      const scrollFraction = totalScroll > 0 ? currentScroll / totalScroll : 0;
+      const targetY = scrollFraction * height - height / 2;
+      camera.position.y = -targetY;
+      galleryGroup.rotation.y += baseRotationSpeed + rotationSpeed;
+      rotationSpeed *= 0.95;
 
+      renderer.render(scene, camera);
+    }
 
+    initializeBlock();
+    animate();
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateScrollValues);
+      if (renderer.domElement && renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
   }, []);
   return <div className="gallery"></div>;
 }
