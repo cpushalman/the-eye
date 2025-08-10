@@ -1,17 +1,12 @@
 .gallery{
     position: relative;
-    height: 100vh;
-    background: #181818;
+    height: 500vh;
+    background: #bbbbbb;
 width: 100%;
 }
 
-.comeve{
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    font-family: MyFont;
-    transform: translateX(-50%);
-    font-size: 2rem;
-    color: rgb(88, 88, 88);
-
+canvas{
+ position: absolute;
+ top: 0;
+ left: 0;
 }
