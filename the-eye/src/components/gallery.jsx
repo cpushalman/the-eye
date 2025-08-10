@@ -19,7 +19,9 @@ export default function Gallery() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
-    document.querySelector(".gallery").appendChild(renderer.domElement);
+    document
+      .querySelector(".gallery-canvas-container")
+      .appendChild(renderer.domElement);
     camera.position.z = 12;
     camera.position.y = 0;
     camera.lookAt(0, 0, 0);
@@ -248,5 +250,14 @@ export default function Gallery() {
       renderer.dispose();
     };
   }, []);
-  return <div className="gallery"></div>;
+
+  return (
+    <div className="gallery">
+      <div className="gallery-pin-spacer">
+        <div className="gallery-sticky-wrapper">
+          <div className="gallery-canvas-container"></div>
+        </div>
+      </div>
+    </div>
+  );
 }
