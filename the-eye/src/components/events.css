@@ -1,58 +1,157 @@
-img{
+img {
   height: 100%;
   width: 100%;
   object-fit: cover;
   position: relative;
 }
 
-section{
-  position: relative;
-  color: white;
-  height: 100svh;
-  width: 100vw;
-  background: #181818;
+/* Remove conflicting section styles */
+.events {
+  background: #0e0e0e;
+  min-height: 100vh;
   overflow: hidden;
-  padding: 2em;
+  position: relative;
 }
 
-.sticky-cards{
+/* Background Typography */
+.bg-typography-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap");
+
+.bg-typography {
+  font-size: clamp(10rem, 18vw, 30rem);
+  font-weight: 900;
+  font-family: "Inter", "Fira Code", Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.12); /* Clean solid color instead of gradient */
+  text-transform: uppercase;
+  letter-spacing: -0.02em; /* Tighter letter spacing */
+  line-height: 0.85;
+  margin: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  white-space: nowrap;
+  transform: translateZ(0);
+  opacity: 1;
+  z-index: 1;
+  position: relative;
+  /* Removed gradient background-clip that was causing blur */
+}
+
+.letter {
+  display: inline-block;
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for individual letters */
+.letter:hover {
+  transform: translateY(-2px) scale(1.05);
+  text-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+section {
+  position: relative;
+  color: white;
+  background: #181818;
+  overflow: hidden;
+  padding: 0; /* Remove padding that might cause issues */
+}
+
+.sticky-cards {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0e0e0e;
+  background: transparent; /* Make background transparent to show typography */
   color: white;
-
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  padding: 2em;
+  z-index: 5; /* Reduced z-index to let typography show through */
 }
 
-.cards-container{
+.cards-container {
   width: 40%;
   height: 50%;
   position: relative;
   border-radius: 0.5em;
   overflow: hidden;
- 
 }
 
-.cards{
+.cards {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 0.5em;
   overflow: hidden;
+  background: #222; /* Fallback background */
 }
 
-.tag{
-  position: absolute; 
+.card-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  text-align: center;
+  pointer-events: none;
+  max-width: 90%;
+}
+
+.card-title h2 {
+  font-family: "Inter", "FIra Code", Arial, sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.95);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  margin: 0;
+
+  transition: all 0.3s ease;
+}
+.pand h2{
+  width: 500px;
+  font-size: 2rem;
+}
+
+
+
+.card-title h2:hover {
+  transform: scale(1.05);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tag {
+  position: absolute;
   top: 1em;
   left: 1em;
   padding: 0.5em;
   border-radius: 0.25em;
-  background: #000;
-  z-index: 1;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10; /* Higher z-index for visibility */
+  backdrop-filter: blur(5px);
+}
+.kriya h2{
+  color: rgb(102, 102, 102);
 }
 
-.tag p{
+.tag p {
   font-size: 12px;
   font-family: fira code;
-   
 }
+

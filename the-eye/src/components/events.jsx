@@ -3,75 +3,216 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import gsap from "gsap";
 import "./events.css";
 import { useEffect } from "react";
+import bg1 from "../assets/bg1.jpg";
+import bg2 from "../assets/bg2.jpg";
+import bg3 from "../assets/bg3.jpg";
+import bg4 from "../assets/bg4.jpg";
 
 export default function events() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const cards = document.querySelectorAll(".cards");
-    const images = document.querySelectorAll(".cards img");
-    const totalCards = cards.length;
 
-    gsap.set(cards[0], { y: 0, scale: 1, rotation: 0 });
-    gsap.set(images[0], { scale: 1 });
-    for (let i = 1; i < totalCards; i++) {
-      gsap.set(cards[i], { y: "100%", scale: 1, rotation: 0 });
-      gsap.set(images[i], { scale: 1 });
-    }
+    // Simple timeout to ensure DOM is ready
+    const timer = setTimeout(() => {
+      // Split text animation for background typography
+      const splitText = document.querySelector(".bg-typography");
+      console.log("Typography element found:", splitText);
 
-    const scrollTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".sticky-cards",
-        start: "top top",
-        end: `+=${window.innerHeight * (totalCards - 1)}`,
-        pin: true,
-        scrub: 0.5,
-        
-      },
-    });
+      if (splitText) {
+        console.log("Original text content:", splitText.textContent);
 
-    for (let i = 0; i < totalCards - 1; i++) {
-      const currentCard = cards[i];
-      const currentImg = images[i];
-      const nextCard = cards[i + 1];
-      const position = i;
+        // Split the text into individual letters
+        const letters = splitText.textContent
+          .split("")
+          .map((letter, index) => {
+            return `<span class="letter" data-index="${index}">${
+              letter === " " ? "&nbsp;" : letter
+            }</span>`;
+          })
+          .join("");
+        splitText.innerHTML = letters;
 
-      scrollTimeline.to(
-        currentCard,
-        { scale: 0.5, rotation: 10, duration: 1, ease: "none" },
-        position
-      );
-    }
+        const letterSpans = document.querySelectorAll(".letter");
+        console.log("Letter spans created:", letterSpans.length);
 
-    return () => {};
+        // Ensure letters are visible first, then animate
+        gsap.set(letterSpans, {
+          opacity: 0,
+          y: 30,
+        });
+
+        // Animate with a longer delay to ensure it triggers
+        gsap.to(letterSpans, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1, // Increased stagger for more visible effect
+          ease: "back.out(1.7)",
+          delay: 1, // Increased delay
+          onStart: () => console.log("Typography animation started"),
+          onComplete: () => console.log("Typography animation completed"),
+        });
+      }
+
+      const cards = document.querySelectorAll(".cards");
+      const totalCards = cards.length;
+
+      console.log("Found cards:", totalCards);
+      console.log("Cards:", cards);
+
+      if (totalCards === 0) {
+        console.error("No cards found!");
+        return;
+      }
+
+      // Clear any existing ScrollTriggers
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+      // Set initial positions with correct z-index stacking
+      cards.forEach((card, index) => {
+        const cardImage = card.querySelector("img");
+
+        if (index === 0) {
+          gsap.set(card, {
+            y: 0,
+            scale: 1,
+            rotation: 0,
+            zIndex: totalCards, // Highest z-index for top card
+            opacity: 1,
+            visibility: "visible",
+          });
+          // Set initial image scale
+          gsap.set(cardImage, { scale: 1 });
+        } else {
+          gsap.set(card, {
+            y: "100%",
+            scale: 1,
+            rotation: 0,
+            zIndex: totalCards - index, // Descending z-index (4,3,2,1)
+            opacity: 1,
+            visibility: "visible",
+          });
+          // Set initial image scale
+          gsap.set(cardImage, { scale: 1 });
+        }
+      });
+
+      // Create ScrollTrigger animation
+      const scrollTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".sticky-cards",
+          start: "top top",
+          end: `+=${window.innerHeight * (totalCards - 1)}`,
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onStart: () => console.log("Animation started"),
+          onUpdate: (self) => {
+            console.log("Animation progress:", self.progress);
+          },
+          onComplete: () => console.log("Animation completed"),
+        },
+      });
+
+      // Create animations for each card with proper z-index management and image scaling
+      for (let i = 0; i < totalCards - 1; i++) {
+        const currentCard = cards[i];
+        const currentCardImage = currentCard.querySelector("img");
+        const nextCard = cards[i + 1];
+
+        scrollTimeline
+          .to(
+            currentCard,
+            {
+              scale: 0.85,
+              rotation: 3,
+              duration: 1,
+              ease: "none",
+            },
+            i
+          )
+          .to(
+            currentCardImage,
+            {
+              scale: 1.2, // Scale image by 1.2 when card goes behind
+              duration: 1,
+              ease: "none",
+            },
+            i
+          )
+          .to(
+            nextCard,
+            {
+              y: "0%",
+              duration: 1,
+              ease: "none",
+              onStart: () => {
+                // Ensure the next card comes to front when it starts animating
+                gsap.set(nextCard, { zIndex: totalCards + 1 });
+              },
+            },
+            i
+          );
+      }
+    }, 500); // Increased timeout
+
+    return () => {
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
   return (
     <div className="events">
+      {/* Background Typography */}
+      <div className="bg-typography-container">
+        <h1 className="bg-typography">EVENTS</h1>
+      </div>
+
       <section className="sticky-cards">
         <div className="cards-container">
           <div className="cards">
             <div className="tag">
-              <p>Kriya</p>
+              <p>CTF</p>
             </div>
-            <img src="src\assets\bg1.jpg" alt="" />
+            <div className="card-title">
+              <div className="pand">
+                <h2>
+                  The Pandemic that <br /> never happened
+                </h2>
+              </div>
+            </div>
+            <img src={bg1} alt="Background 1" />
           </div>
           <div className="cards">
             <div className="tag">
-              <p>Kriya</p>
+              <p>Mystery Event</p>
             </div>
-            <img src="src\assets\bg2.jpg" alt="" />
+            <div className="card-title">
+              <h2>HiddenX</h2>
+            </div>
+            <img src={bg2} alt="Background 2" />
           </div>
           <div className="cards">
             <div className="tag">
-              <p>Kriya</p>
+              <p>Tech Summit</p>
             </div>
-            <img src="src\assets\bg3.jpg" alt="" />
+            <div className="card-title">
+              <h2>EtherXSummit</h2>
+            </div>
+            <img src={bg3} alt="Background 3" />
           </div>
           <div className="cards">
             <div className="tag">
-              <p>Kriya</p>
+              <p>Innovation</p>
             </div>
-            <img src="src\assets\bg4.jpg" alt="" />
+            <div className="card-title">
+              <div className="kriya">
+                <h2>Kriya</h2>
+              </div>
+            </div>
+            <img src={bg4} alt="Background 4" />
           </div>
         </div>
       </section>
