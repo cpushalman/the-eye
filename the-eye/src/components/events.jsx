@@ -16,10 +16,10 @@ export default function events() {
     const timer = setTimeout(() => {
       // Split text animation for background typography
       const splitText = document.querySelector(".bg-typography");
-      console.log("Typography element found:", splitText);
+
 
       if (splitText) {
-        console.log("Original text content:", splitText.textContent);
+  
 
         // Split the text into individual letters
         const letters = splitText.textContent
@@ -33,7 +33,7 @@ export default function events() {
         splitText.innerHTML = letters;
 
         const letterSpans = document.querySelectorAll(".letter");
-        console.log("Letter spans created:", letterSpans.length);
+       
 
         // Ensure letters are visible first, then animate
         gsap.set(letterSpans, {
@@ -49,16 +49,14 @@ export default function events() {
           stagger: 0.1, // Increased stagger for more visible effect
           ease: "back.out(1.7)",
           delay: 1, // Increased delay
-          onStart: () => console.log("Typography animation started"),
-          onComplete: () => console.log("Typography animation completed"),
+          
         });
       }
 
       const cards = document.querySelectorAll(".cards");
       const totalCards = cards.length;
 
-      console.log("Found cards:", totalCards);
-      console.log("Cards:", cards);
+      
 
       if (totalCards === 0) {
         console.error("No cards found!");
@@ -107,11 +105,7 @@ export default function events() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onStart: () => console.log("Animation started"),
-          onUpdate: (self) => {
-            console.log("Animation progress:", self.progress);
-          },
-          onComplete: () => console.log("Animation completed"),
+        
         },
       });
 
