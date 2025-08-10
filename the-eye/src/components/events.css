@@ -28,12 +28,12 @@ img {
   overflow: hidden;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap");
+
 
 .bg-typography {
   font-size: clamp(10rem, 18vw, 30rem);
   font-weight: 900;
-  font-family: "Inter", "Fira Code", Arial, sans-serif;
+  font-family: "MyFont";
   color: rgba(255, 255, 255, 0.12); /* Clean solid color instead of gradient */
   text-transform: uppercase;
   letter-spacing: -0.02em; /* Tighter letter spacing */
