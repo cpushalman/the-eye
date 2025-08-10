@@ -98,11 +98,7 @@ export default function events() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onStart: () => console.log("Animation started"),
-          onUpdate: (self) => {
-            console.log("Animation progress:", self.progress);
-          },
-          onComplete: () => console.log("Animation completed"),
+          
         },
       });
 
@@ -115,9 +111,6 @@ export default function events() {
         pinSpacing: false,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-        onToggle: (self) => {
-          console.log("Typography pinned:", self.isActive);
-        },
       });
 
       // Create animations for each card with proper z-index management and image scaling
