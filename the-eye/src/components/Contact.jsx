@@ -4,7 +4,7 @@ import VulnerabilityReportForm from "./VulnerabilityReportForm";
 import IncidentReportForm from "./IncidentReportForm";
 
 export default function Contact() {
-  const [activeForm, setActiveForm] = useState("vulnerability");
+  const [activeForm, setActiveForm] = useState("incident");
 
   return (
     <div className="contact-section">
@@ -17,19 +17,19 @@ export default function Contact() {
         <div className="form-tabs">
           <button
             className={`tab-button ${
-              activeForm === "vulnerability" ? "active" : ""
-            }`}
-            onClick={() => setActiveForm("vulnerability")}
-          >
-            Vulnerability Report
-          </button>
-          <button
-            className={`tab-button ${
               activeForm === "incident" ? "active" : ""
             }`}
             onClick={() => setActiveForm("incident")}
           >
             Incident Report
+          </button>
+          <button
+            className={`tab-button ${
+              activeForm === "vulnerability" ? "active" : ""
+            }`}
+            onClick={() => setActiveForm("vulnerability")}
+          >
+            Vulnerability Report
           </button>
         </div>
 

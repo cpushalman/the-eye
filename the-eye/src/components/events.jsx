@@ -97,26 +97,66 @@ export default function events() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            // When we reach the end of the pinned section, start fading out typography
+            const progress = self.progress;
+            if (progress > 0.9) {
+              // Start fading when 90% through the animation
+              const fadeProgress = (progress - 0.9) / 0.1; // Normalize to 0-1
+              const typographyContainer = document.querySelector(
+                ".bg-typography-container"
+              );
+              if (typographyContainer) {
+                gsap.to(typographyContainer, {
+                  opacity: 1 - fadeProgress,
+                  duration: 0.1,
+                  ease: "none",
+                });
+              }
+            } else {
+              // Ensure typography is visible during the main animation
+              const typographyContainer = document.querySelector(
+                ".bg-typography-container"
+              );
+              if (typographyContainer) {
+                gsap.to(typographyContainer, {
+                  opacity: 1,
+                  duration: 0.1,
+                  ease: "none",
+                });
+              }
+            }
+          },
           onLeave: () => {
+            // Completely hide typography when leaving the section
             const typographyContainer = document.querySelector(
               ".bg-typography-container"
             );
             if (typographyContainer) {
-              typographyContainer.style.display = "none";
+              gsap.to(typographyContainer, {
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.out",
+              });
             }
           },
           onEnterBack: () => {
+            // Show typography when entering back
             const typographyContainer = document.querySelector(
               ".bg-typography-container"
             );
             if (typographyContainer) {
-              typographyContainer.style.display = "flex";
+              gsap.to(typographyContainer, {
+                opacity: 1,
+                duration: 0.3,
+                ease: "power2.out",
+              });
             }
           },
         },
       });
 
-      // Pin the typography container along with the section
+      // Pin the typography container with the viewport during the entire events section
       ScrollTrigger.create({
         trigger: ".events",
         start: "top top",
