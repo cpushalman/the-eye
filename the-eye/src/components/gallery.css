@@ -1,45 +1,105 @@
-.gallery{
-    position: relative;
-    align-items: center;
-    height: 100vh;
-    background: #0e0e0e;;
-    overflow: hidden;
+.gallery {
+  position: relative;
+  align-items: center;
+  height: 100vh;
+  background: #0e0e0e;
+  overflow: hidden;
 }
 
-
-.gallery h1{
-    text-align: center;
-    font-family: MyFont;
-    padding: 20px;
-    font-size: 8rem;
-    color: rgb(88, 88, 88);
+.gallery h1 {
+  text-align: center;
+  font-family: MyFont;
+  padding: 20px;
+  font-size: 8rem;
+  color: rgb(88, 88, 88);
+  position: relative;
+  z-index: 10;
 }
 
 .gallery-overlay {
-  position: absolute;
-  margin-inline: auto;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.85);
   z-index: 100;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 
 .gallery-modal {
-    width: 65%;
-    height: 60%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  width: 65%;
+  height: 60%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(100, 100, 100, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
 }
+
 .gallery-overlay.active {
   opacity: 1;
   pointer-events: auto;
 }
 
+.gallery-overlay.active .gallery-modal {
+  transform: scale(1);
+}
+
+.gallery-modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.gallery-modal-close {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.gallery-modal-close:hover {
+  opacity: 1;
+}
+
+/* Add a subtle glow effect to the images when hovered */
+canvas {
+  cursor: pointer;
+}
+
+
+.refresh-gallery-btn {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  padding: 10px 15px;
+  background: rgba(88, 88, 88, 0.3);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: MyFont, sans-serif;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.refresh-gallery-btn:hover {
+  background: rgba(88, 88, 88, 0.5);
+  transform: translateY(-2px);
+}
