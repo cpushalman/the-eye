@@ -232,11 +232,11 @@ export default function Gallery() {
   const [displayedImages, setDisplayedImages] = useState([]);
   
   const allImages = React.useMemo(() => [
-    '/src/assets/img_1.jpg',
-    '/src/assets/img_2.jpg',
-    '/src/assets/img_3.jpg',
-    '/src/assets/img_4.jpg',
-    '/src/assets/img_5.jpg',
+    '/img_1.jpg',
+    '/img_2.jpg',
+    '/img_3.jpg',
+    '/img_4.jpg',
+    '/img_5.jpg',
   ], []);
   
   // Choose random images to display - optimized to run only once
