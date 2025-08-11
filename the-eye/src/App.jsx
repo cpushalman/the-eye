@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Gallery from "./components/gallery";
 import Contact from "./components/Contact";
 
@@ -9,8 +8,6 @@ import Events from "./components/events";
 import HomePage from "./components/HomePage";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <IntroLogo></IntroLogo>
