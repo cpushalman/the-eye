@@ -329,7 +329,7 @@ section {
   }
 
   .card-title h2 {
-    font-size: clamp(12rem, 3vw, 1.8rem);
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
   }
 
   .pand h2 {
