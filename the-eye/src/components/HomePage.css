@@ -521,11 +521,11 @@
   }
 
   .herotxt1 h1 {
-    font-size: 1.1em;
+    font-size: 1.4em;
   }
 
   .herotxt2 h1 {
-    font-size: 1.1em;
+    font-size: 1.4em;
   }
 
   .explore {
@@ -534,7 +534,9 @@
   }
 
   .svglogo {
-    width: 50px;
+    bottom: 4px;
+    right: 20px;
+    width: 40px;
   }
 
   .mobile-menu-btn span {
