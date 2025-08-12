@@ -131,6 +131,7 @@ export default function IntroLogo() {
           position: "fixed",
           inset: 0,
           display: "flex",
+
           alignItems: "center",
           justifyContent: "center",
           zIndex: 9999,
@@ -142,8 +143,8 @@ export default function IntroLogo() {
         <svg
           ref={svgRef}
           xmlns="http://www.w3.org/2000/svg"
-          width="650"
-          height="400"
+          width="300"
+          height="200"
           viewBox="0 0 650 400"
           fill="none"
         >

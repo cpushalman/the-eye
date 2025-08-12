@@ -1,3 +1,17 @@
+/* Global overflow fix */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 img {
   height: 100%;
   width: 100%;
@@ -9,8 +23,10 @@ img {
 .events {
   background: #0e0e0e;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   position: relative;
+  width: 100%;
 }
 
 /* Background Typography */
@@ -30,7 +46,7 @@ img {
 }
 
 .bg-typography {
-  font-size: clamp(10rem, 18vw, 30rem);
+  font-size: clamp(5rem, 18vw, 30rem);
   font-weight: 900;
   font-family: "MyFont";
   color: rgba(255, 255, 255, 0.12); /* Clean solid color instead of gradient */
@@ -45,6 +61,8 @@ img {
   opacity: 1;
   z-index: 1;
   position: relative;
+  max-width: 100vw;
+  overflow: hidden;
   /* Removed gradient background-clip that was causing blur */
 }
 
@@ -76,9 +94,11 @@ section {
   background: transparent; /* Make background transparent to show typography */
   color: white;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  max-width: 100vw;
   position: relative;
   padding: 2em;
+  box-sizing: border-box;
   z-index: 5; /* Reduced z-index to let typography show through */
 }
 
@@ -88,6 +108,8 @@ section {
   position: relative;
   border-radius: 0.5em;
   overflow: hidden;
+  max-width: calc(100vw - 4em);
+  box-sizing: border-box;
 }
 
 .cards {
@@ -119,12 +141,12 @@ section {
   letter-spacing: 0.05em;
   line-height: 1.1;
   margin: 0;
-
   transition: all 0.3s ease;
 }
+
 .pand h2 {
   width: 500px;
-  font-size: 2rem;
+  font-size: 2.4rem;
   color: rgb(20, 20, 20);
 }
 
@@ -144,11 +166,204 @@ section {
   z-index: 10; /* Higher z-index for visibility */
   backdrop-filter: blur(5px);
 }
+
 .kriya h2 {
   color: rgb(102, 102, 102);
 }
 
 .tag p {
   font-size: 12px;
-  font-family: fira code;
+  font-family: "Fira Code", monospace;
+}
+
+/* =============== MOBILE RESPONSIVE STYLES =============== */
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .cards-container {
+    width: 55%;
+    height: 55%;
+    max-width: calc(100vw - 3em);
+  }
+
+  .sticky-cards {
+    padding: 1.5em;
+  }
+
+  .bg-typography {
+    font-size: clamp(6rem, 15vw, 25rem);
+    max-width: 95vw;
+  }
+
+  .card-title h2 {
+    font-size: clamp(1.8rem, 4.2vw, 3.2rem);
+  }
+
+  .pand h2 {
+    width: 400px;
+    font-size: 2rem;
+  }
+} /* Mobile landscape */
+@media (max-width: 768px) {
+  .sticky-cards {
+    padding: 1em;
+  }
+
+  .cards-container {
+    width: 70%;
+    height: 60%;
+  }
+
+  .bg-typography {
+    font-size: clamp(4rem, 12vw, 20rem);
+    writing-mode: horizontal-tb;
+  }
+
+  .bg-typography-container {
+    padding-top: 3vh;
+  }
+
+  .card-title h2 {
+    font-size: clamp(1.5rem, 3.8vw, 2.5rem);
+    letter-spacing: 0.02em;
+  }
+
+  .pand h2 {
+    width: 300px;
+    font-size: 1.7rem;
+    line-height: 1.2;
+  }
+
+  .tag {
+    top: 0.8em;
+    left: 0.8em;
+    padding: 0.4em;
+  }
+
+  .tag p {
+    font-size: 10px;
+  }
+
+  /* Disable hover effects on mobile */
+  .letter:hover {
+    transform: none;
+    text-shadow: none;
+  }
+
+  .card-title h2:hover {
+    transform: none;
+    background: none;
+    border: none;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .sticky-cards {
+    padding: 0.8em;
+  }
+
+  .cards-container {
+    width: 85%;
+    height: 65%;
+  }
+
+  .bg-typography {
+    font-size: clamp(3rem, 10vw, 15rem);
+    letter-spacing: -0.01em;
+  }
+
+  .bg-typography-container {
+    padding-top: 2vh;
+  }
+
+  .card-title {
+    max-width: 95%;
+  }
+
+  .card-title h2 {
+    font-size: clamp(1.3rem, 3.5vw, 2.2rem);
+    font-weight: 600;
+  }
+
+  .pand h2 {
+    width: 250px;
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .tag {
+    top: 0.6em;
+    left: 0.6em;
+    padding: 0.3em 0.5em;
+    border-radius: 0.2em;
+  }
+
+  .tag p {
+    font-size: 9px;
+    margin: 0;
+  }
+
+  .cards {
+    border-radius: 0.3em;
+  }
+
+  .cards-container {
+    border-radius: 0.3em;
+  }
+}
+
+/* Very small mobile screens */
+@media (max-width: 360px) {
+  .sticky-cards {
+    padding: 0.5em;
+  }
+
+  .cards-container {
+    width: 90%;
+    height: 70%;
+  }
+
+  .bg-typography {
+    font-size: clamp(2.5rem, 8vw, 12rem);
+  }
+
+  .card-title h2 {
+    font-size: clamp(1.1rem, 3vw, 1.8rem);
+  }
+
+  .pand h2 {
+    width: 200px;
+    font-size: 1.2rem;
+  }
+
+  .tag {
+    top: 0.4em;
+    left: 0.4em;
+    padding: 0.2em 0.4em;
+  }
+
+  .tag p {
+    font-size: 8px;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .bg-typography {
+    font-size: clamp(3rem, 8vw, 15rem);
+  }
+
+  .bg-typography-container {
+    padding-top: 1vh;
+  }
+
+  .cards-container {
+    width: 60%;
+    height: 75%;
+  }
+
+  .sticky-cards {
+    padding: 0.8em;
+  }
 }
